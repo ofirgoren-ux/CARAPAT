@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ניהול רכב משותף - הקבוצה</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="phone-container">
+    
+    <!-- ==================== 1. מסך הבית ==================== -->
+    <div id="home-screen" class="screen active">
+      <header class="top-header">
+        <h1>שלום אופיר</h1>
+        <div class="user-avatar" onclick="switchScreen('profile-screen')">👤</div>
+      </header>
+
+      <!-- מצב רכב חי + הזמנה מהירה -->
+      <div class="hero-grid">
+        <div class="status-card">
+          <div class="status-badge">🔴 הרכב בנסיעה</div>
+          <div class="status-title">בביקורת חורף</div>
+          <div class="status-time">חוזר ב-<strong>12:00</strong></div>
+          <button class="btn-call" onclick="alert('חיוג לנהג: יובל לוקר (מספר מוגן במסד הנתונים)')">📞 יובל לוקר</button>
+        </div>
+        <div class="book-hero-btn" onclick="switchScreen('booking-screen')">
+          <span class="title">הזמן רכב</span>
+          <span class="icon">🚗</span>
+          <span class="plus-box">+</span>
+        </div>
+      </div>
+
+      <!-- באנר נסיעות מחפשות נהג -->
+      <div class="driver-alert-banner" onclick="switchScreen('schedule-screen')">
+        <span>🛞 2 נסיעות מחפשות נהג</span>
+        <span class="link-text">לצפייה ◄</span>
+      </div>
+
+      <div class="section-title">פעילות יומית לתאריך 20.10.26</div>
+
+      <!-- ציר הזמן היומי (מוטמע במלואו כפי שהיה בקובץ שעבד) -->
+      <div class="timeline-list" id="home-timeline-list">
+        
+        <div class="timeline-card operational">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">7:00-14:00</span>
+          </div>
+          <div class="info-col">
+            <span class="task-badge operational-badge">מבצעי • שאיבות בדרום</span>
+            <span class="person-name">אביה גיאת</span>
+          </div>
+          <button class="btn-call-circle" onclick="alert('חיוג לנהג: אביה גיאת')">📞</button>
+        </div>
+
+        <div class="timeline-card free-slot">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">14:00-15:00</span>
+          </div>
+          <div class="info-col">
+            <button class="btn-book-slot" onclick="switchScreen('booking-screen')">
+              <span class="slot-plus">+</span> הזמן רכב
+            </button>
+          </div>
+        </div>
+
+        <div class="timeline-card personal">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">15:00-15:30</span>
+          </div>
+          <div class="info-col">
+            <span class="task-badge personal-badge">אישי</span>
+            <span class="person-name">אופיר גורן</span>
+          </div>
+          <button class="btn-call-circle" onclick="alert('חיוג למזמין: אופיר גורן')">📞</button>
+        </div>
+
+        <div class="timeline-card free-slot">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">15:30-19:00</span>
+          </div>
+          <div class="info-col">
+            <button class="btn-book-slot" onclick="switchScreen('booking-screen')">
+              <span class="slot-plus">+</span> הזמן רכב
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ==================== 2. מסך לוח זמנים ==================== -->
+    <div id="schedule-screen" class="screen">
+      <header class="top-header">
+        <h1>לוח זמנים</h1>
+        <button class="back-btn" onclick="toggleScheduleView(this)">יומי ✓ | שבועי</button>
+      </header>
+
+      <!-- פס ימי השבוע המלא -->
+      <div class="week-strip">
+        <div class="day-pill" onclick="selectDayPill(this)">א'<br>19</div>
+        <div class="day-pill active" onclick="selectDayPill(this)">ב'<br>20</div>
+        <div class="day-pill" onclick="selectDayPill(this)">ג'<br>21</div>
+        <div class="day-pill" onclick="selectDayPill(this)">ד'<br>22</div>
+        <div class="day-pill" onclick="selectDayPill(this)">ה'<br>23</div>
+        <div class="day-pill" onclick="selectDayPill(this)">ו'<br>24</div>
+        <div class="day-pill" onclick="selectDayPill(this)">ש'<br>25</div>
+      </div>
+
+      <!-- סינון מהיר -->
+      <div class="btn-group">
+        <button class="choice-btn active" onclick="filterSchedule('all', this)">הכל ✓</button>
+        <button class="choice-btn warning-tab" onclick="filterSchedule('pending', this)">🛞 מחפשות נהג (2)</button>
+        <button class="choice-btn" onclick="filterSchedule('free-slot', this)">פנוי</button>
+      </div>
+
+      <!-- כל כרטיסי הלו"ז מוטמעים סטטית במלואם -->
+      <div class="timeline-list" id="schedule-timeline-list">
+        
+        <div class="timeline-card operational" data-type="booked">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">07:00-14:00</span>
+          </div>
+          <div class="info-col">
+            <span class="task-badge operational-badge">🟠 מבצעי • מאושר</span>
+            <span class="person-name">שאיבות בדרום</span>
+            <div class="action-row">
+              <button class="btn-call-small" onclick="alert('חיוג לנהג: אביה גיאת')">📞 נהג: אביה</button>
+              <button class="btn-call-small" onclick="alert('חיוג למזמינה: דנה לוי')">📞 מזמין: דנה</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card free-slot" data-type="free-slot">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">14:00-15:00</span>
+          </div>
+          <div class="info-col">
+            <button class="btn-book-slot" onclick="switchScreen('booking-screen')">
+              <span class="slot-plus">+</span> הזמן רכב
+            </button>
+          </div>
+        </div>
+
+        <div class="timeline-card personal" data-type="booked">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">15:00-15:30</span>
+          </div>
+          <div class="info-col">
+            <span class="task-badge personal-badge">🔵 אישי • מאושר</span>
+            <span class="person-name">אופיר גורן</span>
+            <div class="action-row">
+              <button class="btn-call-small" onclick="alert('חיוג לנהג: אופיר גורן')">📞 נהג: אופיר</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card free-slot" data-type="free-slot">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">15:30-19:00</span>
+          </div>
+          <div class="info-col">
+            <button class="btn-book-slot" onclick="switchScreen('booking-screen')">
+              <span class="slot-plus">+</span> הזמן רכב
+            </button>
+          </div>
+        </div>
+
+        <div class="timeline-card pending" data-type="pending">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">16:00-17:30</span>
+          </div>
+          <div class="info-col">
+            <span class="task-badge warning-badge">⏳ אישי • דרוש נהג</span>
+            <span class="person-name">קליניקה (שחר אברהם)</span>
+            <div class="action-row">
+              <button class="btn-volunteer" onclick="volunteerDriver(this, 'שחר אברהם')">🙋‍♂️ אני אנהג</button>
+              <button class="btn-call-small" onclick="alert('חיוג למזמין: שחר אברהם')">📞 מזמין: שחר</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card unplanned" data-type="booked">
+          <div class="time-col">
+            <span class="date">20.10.2026</span>
+            <span class="hours">18:00-20:00</span>
+          </div>
+          <div class="info-col">
+            <span class="task-badge urgent-badge">🔥 בלת"מ • דחיפות גבוהה</span>
+            <span class="person-name">תקלה באתר (יובל לוקר)</span>
+            <div class="action-row">
+              <button class="btn-approve" onclick="approveTrip(this)">🛡️ אשר נסיעה</button>
+              <button class="btn-call-small" onclick="alert('חיוג לנהג: יובל לוקר')">📞 נהג: יובל</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ==================== 3. מסך הזמנת רכב ==================== -->
+    <div id="booking-screen" class="screen">
+      <header class="top-header">
+        <h1>הזמנת רכב</h1>
+        <button class="back-btn" onclick="switchScreen('home-screen')">✕ ביטול</button>
+      </header>
+
+      <div class="form-card">
+        <label class="form-label">📅 מועד ומשך הנסיעה</label>
+        <div class="date-time-row">
+          <span>תאריך: <strong>20.10.2026</strong></span>
+          <span>התחלה: <strong>14:00 ▾</strong></span>
+        </div>
+        <div class="btn-group">
+          <button class="choice-btn" onclick="setDuration(0.5, '14:30', this)">30 דק'</button>
+          <button class="choice-btn active" onclick="setDuration(1, '15:00', this)">שעה ✓</button>
+          <button class="choice-btn" onclick="setDuration(2, '16:00', this)">שעתיים</button>
+          <button class="choice-btn" onclick="setDuration(3, '17:00', this)">מותאם</button>
+        </div>
+        <div class="return-calc" id="calc-return-text">⏱️ שעת חזרה מחושבת: 15:00</div>
+      </div>
+
+      <div class="form-card">
+        <label class="form-label">🏷️ סיווג הצורך</label>
+        <div class="btn-group">
+          <button class="choice-btn active-orange" onclick="setClassification('operational', this)">🟠 מבצעי ✓</button>
+          <button class="choice-btn" onclick="setClassification('personal', this)">🔵 אישי</button>
+          <button class="choice-btn" onclick="setClassification('unplanned', this)">🟣 בלת"מ</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <label class="form-label">⚡ רמת דחיפות</label>
+        <div class="btn-group">
+          <button class="choice-btn active-green" onclick="setUrgency('low', this)">🟢 רגילה (אישור מיידי) ✓</button>
+          <button class="choice-btn" onclick="setUrgency('high', this)">🔥 גבוהה (אישור מנהל)</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <label class="form-label">🛞 שיוך נהג לנסיעה</label>
+        <select class="input-solid" id="driver-select">
+          <option value="אופיר גורן">אני הנהג (מורשה)</option>
+          <option value="דרוש נהג">🚗 חפש נהג פנוי בקבוצה (דרוש נהג)</option>
+          <option value="יובל לוקר">יובל לוקר (שלח בקשת אישור לנהג)</option>
+          <option value="אביה גיאת">אביה גיאת (שלח בקשת אישור לנהג)</option>
+        </select>
+        <span class="sub-note">* מזמין שאינו נהג חייב באישור הנהג המשובץ</span>
+      </div>
+
+      <div class="form-card">
+        <label class="form-label">📝 תיאור קצר (יוצג בלו"ז)</label>
+        <input type="text" class="input-solid" id="trip-purpose" placeholder="למשל: ביקורת חורף, שאיבות בדרום..." />
+      </div>
+
+      <button class="cta-submit" onclick="submitBooking()">+ שלח בקשה ושריין משבצת</button>
+    </div>
+
+
+    <!-- ==================== 4. מסך פרופיל אישי ==================== -->
+    <div id="profile-screen" class="screen">
+      <header class="top-header">
+        <h1>פרופיל אישי</h1>
+        <button class="back-btn" onclick="switchScreen('home-screen')">◄ חזרה</button>
+      </header>
+
+      <div class="profile-bento-header">
+        <div class="profile-avatar-big">👤</div>
+        <h2>אופיר גורן</h2>
+        <div class="action-row" style="justify-content: center; margin-top: 6px;">
+          <span class="role-tag">🛞 נהג מורשה</span>
+          <span class="role-tag">🛡️ בעל תפקיד מאשר</span>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <label class="form-label">📞 פרטי יצירת קשר (חסוי במערכת)</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" class="input-solid" value="054-XXXXXXX" dir="ltr" style="text-align: center; font-weight: 700;" readonly />
+          <button class="btn-call" style="width: auto; padding: 0 18px;" onclick="alert('מספר הטלפון עודכן בהצלחה')">עדכן</button>
+        </div>
+        <span class="sub-note">🔒 המספר אינו מוצג כטקסט בלו"ז – מופעל רק בלחיצה על כפתור ה-📞</span>
+      </div>
+
+      <div class="form-card">
+        <label class="form-label">⚙️ הגדרות משתמש ושידוך נהגים</label>
+        <div class="btn-group">
+          <button class="choice-btn active" onclick="toggleProfileRole(this)">🛞 נהג מורשה ✓</button>
+          <button class="choice-btn" onclick="toggleProfileRole(this)">מזמין בלבד</button>
+        </div>
+        <div class="date-time-row" style="margin-top: 6px;">
+          <span>קבלת התראות "דרוש נהג":</span>
+          <span class="task-badge mint-badge">פעיל ✓</span>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <label class="form-label">🚗 תיעוד מהיר ומצב רכב אחרון</label>
+        <div class="date-time-row">
+          <span>חניה: <strong>חניה ראשית</strong></span>
+          <span>דלק: <strong>3/4 מיכל</strong></span>
+        </div>
+        <div class="btn-group" style="margin-top: 4px;">
+          <button class="choice-btn warning-tab" onclick="alert('נפתח חלון דיווח תקלה / צילום')">⚠️ דווח על תקלה</button>
+          <button class="choice-btn" onclick="alert('מציג היסטוריית נסיעות ותיעוד')">📋 היסטוריית נסיעות</button>
+        </div>
+      </div>
+
+      <button class="cta-submit" onclick="switchScreen('home-screen')">✓ שמור שינויים</button>
+    </div>
+
+
+    <!-- ==================== סרגל ניווט תחתון קבוע ==================== -->
+    <nav class="bottom-nav">
+      <div class="nav-tab active" id="tab-home" onclick="switchScreen('home-screen')">
+        <span class="nav-pill">🏠</span>
+        <span>בית</span>
+      </div>
+      <div class="nav-tab" id="tab-schedule" onclick="switchScreen('schedule-screen')">
+        <span class="nav-pill">📅</span>
+        <span>לו"ז</span>
+      </div>
+    </nav>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

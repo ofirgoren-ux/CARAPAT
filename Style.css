@@ -1,0 +1,560 @@
+:root {
+  /* משטחי רקע כהים ונקיים */
+  --bg-outer: #0B0E14;
+  --bg-canvas: #161B26;
+  --bg-card: #222A3A;
+  --bg-elevated: #2C364B;
+  --border-color: #36425A;
+
+  /* 1. צבע ראשי לכל האינטראקציות, כפתורי הזמנה וניווט (Primary Blue מתמונת ההשראה) */
+  --primary-blue: #8EB2EB;
+  --primary-blue-subtle: rgba(142, 178, 235, 0.15);
+
+  /* 2. צבעי סיווג נסיעות ומצבים בלבד */
+  --status-operational: #F49D6E; /* כתום - מבצעי */
+  --status-personal: #C9A7EB;    /* סגול - אישי */
+  --status-urgent: #EE5A6F;      /* אדום קורל - בלת"מ / דחיפות גבוהה */
+  --status-pending: #F7D959;     /* צהוב - מחפש נהג */
+
+  /* 3. ירוק שמור אך ורק לכפתורי חיוג טלפוני */
+  --phone-green: #2ECC71;
+
+  /* טקסטים */
+  --text-primary: #FFFFFF;
+  --text-secondary: #94A3B8;
+  --text-dark: #0F141C;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', sans-serif;
+}
+
+body {
+  background-color: var(--bg-outer);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 12px;
+}
+
+/* מסגרת הטלפון */
+.phone-container {
+  width: 100%;
+  max-width: 410px;
+  height: 860px;
+  background-color: var(--bg-canvas);
+  border: 8px solid #252E3F;
+  border-radius: 42px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+}
+
+.screen {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px 16px 88px 16px;
+  overflow-y: auto;
+  gap: 12px;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* כותרת עליונה */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.top-header h1 {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.user-avatar, .back-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: #FFF;
+  padding: 8px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* קוביות עליונות במסך הבית */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.18fr 1fr;
+  gap: 12px;
+}
+
+.status-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 22px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--status-operational);
+}
+
+.status-title {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.status-time {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.status-time strong {
+  font-size: 18px;
+  color: #FFF;
+}
+
+/* קוביית "הזמן רכב" ראשית - כחול Primary */
+.book-hero-btn {
+  background-color: var(--primary-blue);
+  color: var(--text-dark);
+  border-radius: 22px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.book-hero-btn .title {
+  font-size: 17px;
+  color: var(--text-dark);
+}
+
+.book-hero-btn .icon {
+  font-size: 34px;
+  line-height: 1;
+}
+
+.book-hero-btn .plus-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background-color: var(--text-dark);
+  color: var(--primary-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* באנר חיפוש נהג - צהוב התראה */
+.driver-alert-banner {
+  background-color: var(--status-pending);
+  color: var(--text-dark);
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.link-text {
+  background-color: rgba(15, 20, 28, 0.12);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+/* רשימת כרטיסי פעילות ולו"ז */
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.timeline-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* פס צד לפי סיווג הנסיעה בלבד */
+.timeline-card.operational { border-right: 6px solid var(--status-operational); }
+.timeline-card.personal { border-right: 6px solid var(--status-personal); }
+.timeline-card.unplanned { border-right: 6px solid var(--status-urgent); }
+.timeline-card.pending {
+  border: 2px dashed var(--status-pending);
+  border-right: 6px solid var(--status-pending);
+}
+
+/* רצועת זמן פנויה - ניטרלית עם הדגשה כחולה (ללא ירוק!) */
+.timeline-card.free-slot {
+  background-color: rgba(34, 42, 58, 0.5);
+  border: 1px dashed var(--border-color);
+  border-right: 6px solid var(--primary-blue);
+}
+
+.time-col {
+  padding-left: 12px;
+  border-left: 1px solid var(--border-color);
+  min-width: 96px;
+}
+
+.time-col .date {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.time-col .hours {
+  font-size: 15px;
+  font-weight: 800;
+  color: #FFF;
+  margin-top: 2px;
+  display: block;
+}
+
+.info-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* תגיות סיווג */
+.task-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 3px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.operational-badge { background-color: var(--status-operational); }
+.personal-badge { background-color: var(--status-personal); }
+.warning-badge { background-color: var(--status-pending); }
+.urgent-badge { background-color: var(--status-urgent); color: #FFF; }
+.mint-badge { background-color: var(--primary-blue); }
+
+.info-col .person-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #FFF;
+}
+
+/* כפתורי חיוג טלפוני בלבד - הם היחידים שצבועים בירוק */
+.btn-call, .btn-call-circle, .btn-call-small {
+  background-color: var(--phone-green);
+  color: var(--text-dark);
+  border: none;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-call {
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  width: 100%;
+}
+
+.btn-call-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn-call-small {
+  padding: 5px 10px;
+  border-radius: 9px;
+  font-size: 12px;
+}
+
+/* כפתור הזמנת רכב בתוך רצועת זמן פנויה - כחול מלא וברור (ללא ירוק!) */
+.btn-book-slot {
+  background-color: var(--primary-blue);
+  border: none;
+  color: var(--text-dark);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.slot-plus {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background-color: var(--text-dark);
+  color: var(--primary-blue);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.btn-volunteer {
+  background-color: var(--primary-blue);
+  color: var(--text-dark);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-approve {
+  background-color: var(--status-urgent);
+  color: #FFF;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* טפסים וכרטיסי הגדרות */
+.form-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.date-time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.date-time-row strong {
+  color: #FFF;
+}
+
+.return-calc {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-blue);
+}
+
+.sub-note {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.btn-group {
+  display: flex;
+  gap: 6px;
+}
+
+.choice-btn {
+  flex: 1;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 9px 6px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* מצבים פעילים בטפסים - כחול לבחירה רגילה, כתום/אדום לסיווגים */
+.choice-btn.active,
+.choice-btn.active-green {
+  background-color: var(--primary-blue);
+  color: var(--text-dark);
+  border-color: var(--primary-blue);
+}
+
+.choice-btn.active-orange {
+  background-color: var(--status-operational);
+  color: var(--text-dark);
+  border-color: var(--status-operational);
+}
+
+.choice-btn.warning-tab {
+  color: var(--status-pending);
+}
+
+.input-solid {
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-color);
+  border-radius: 11px;
+  padding: 10px 12px;
+  color: #FFF;
+  font-size: 14px;
+  width: 100%;
+}
+
+/* כפתור שליחה/שמירה ראשי בתחתית מסך - כחול Primary מלא */
+.cta-submit {
+  background-color: var(--primary-blue);
+  color: var(--text-dark);
+  border: none;
+  padding: 14px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: center;
+  margin-top: auto;
+}
+
+/* פס ימי השבוע */
+.week-strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day-pill {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 8px 2px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.day-pill.active {
+  background-color: var(--primary-blue);
+  color: var(--text-dark);
+  border-color: var(--primary-blue);
+  font-weight: 800;
+}
+
+/* כרטיס פרופיל עליון */
+.profile-bento-header {
+  background-color: var(--status-personal);
+  color: var(--text-dark);
+  border-radius: 22px;
+  padding: 16px;
+  text-align: center;
+}
+
+.profile-avatar-big {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.role-tag {
+  background-color: rgba(15, 20, 28, 0.14);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* סרגל ניווט תחתון - מודגש בכחול Primary */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background-color: #1A2232;
+  border-top: 1px solid var(--border-color);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.nav-pill {
+  padding: 3px 16px;
+  border-radius: 12px;
+  font-size: 17px;
+}
+
+.nav-tab.active {
+  color: var(--primary-blue);
+}
+
+.nav-tab.active .nav-pill {
+  background-color: var(--primary-blue);
+  color: var(--text-dark);
+}
