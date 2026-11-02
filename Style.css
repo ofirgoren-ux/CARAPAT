@@ -1,0 +1,724 @@
+:root {
+  /* משטחי רקע אטומים ומדויקים מתוך התמונה */
+  --bg-outer: #272B38;        /* רקע סביב הטלפונים בתמונה */
+  --bg-device: #181A20;       /* רקע פנים המכשיר - פחם מט כהה */
+  --bg-card: #262936;         /* צבע הכרטיסים האפורים-כהים (Instagram / List rows) */
+  --bg-card-hover: #2E3242;   /* גוון מעט בהיר יותר ללחיצה/בחירה */
+  --bg-input: #14161B;        /* רקע שדות קלט שקועים */
+  --card-hard-shadow: #0F1116;/* הצל התחתון הכהה שמתחת לכל כרטיס בתמונה */
+  --divider-line: #1C1E26;    /* קו הפרדה דק מתחת לכותרת העליונה ובין שורות */
+
+  /* הגרדיאנטים המדויקים מתוך התמונה */
+  /* 1. גרדיאנט סגול-טורקיז ראשי (כמו כפתור Accept, Optimize וקוביית Twitter) */
+  --grad-primary: linear-gradient(135deg, #6B4DFF 0%, #3B9EFF 50%, #24F0D5 100%);
+  --grad-primary-horiz: linear-gradient(90deg, #6B4DFF 0%, #24F0D5 100%);
+
+  /* 2. גרדיאנט ירוק-מנטה לטבעת הסטטוס, האווטאר וכפתורי החיוג */
+  --grad-mint: linear-gradient(135deg, #2AF598 0%, #00E5A3 55%, #08AEEA 100%);
+
+  /* 3. צבעי סיווג משלימים באותה שפה זרחנית ונקייה על רקע כהה */
+  --accent-cyan: #24F0D5;
+  --accent-purple: #8A6BFF;
+  --accent-orange: #FF9F43;
+  --accent-coral: #FF5263;
+  --accent-yellow: #FFD166;
+  --accent-mint: #2AF598;
+
+  /* צבעי טקסט */
+  --text-white: #FFFFFF;
+  --text-muted: #8C93A8;
+  --text-dark: #14161B;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-outer);
+  color: var(--text-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px;
+  direction: rtl;
+}
+
+/* ==================== מסגרת המכשיר (בדיוק כמו בתמונה) ==================== */
+.phone-container {
+  width: 100%;
+  max-width: 410px;
+  height: 860px;
+  background-color: var(--bg-device);
+  border: 6px solid #121318;
+  border-radius: 36px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 65px rgba(0, 0, 0, 0.65);
+  text-align: right;
+}
+
+.screen {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  padding: 18px 18px 86px 18px;
+  overflow-y: auto;
+  gap: 14px;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* ==================== כותרת עליונה (כמו סרגל Profile / Option בתמונה) ==================== */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  margin-bottom: 2px;
+  border-bottom: 2px solid var(--divider-line);
+  direction: rtl;
+}
+
+.top-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-white);
+  letter-spacing: 0.2px;
+}
+
+/* כפתור אווטאר עגול בירוק-מנטה עם נקודה כתומה (כמו בפינה העליונה בתמונה) */
+.user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--grad-mint);
+  color: var(--text-dark);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 3px 10px rgba(42, 245, 152, 0.25);
+}
+
+.user-avatar::after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 9px;
+  height: 9px;
+  background-color: #FF5722;
+  border: 2px solid var(--bg-device);
+  border-radius: 50%;
+}
+
+/* כפתור חזרה / יומי-שבועי בסגנון מינימליסטי נקי */
+.back-btn {
+  background-color: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 3px 0 var(--card-hard-shadow);
+  color: var(--text-white);
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.back-btn:active {
+  transform: translateY(2px);
+}
+
+/* ==================== קוביות עליונות במסך הבית (כמו Instagram & Twitter בתמונה) ==================== */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 14px;
+}
+
+/* קובייה ימנית: כרטיס מצב הרכב בגוון אפור-צפחה מט (#262936) עם טבעת/מסגרת מנטה */
+.status-card {
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  box-shadow: 0 6px 0 var(--card-hard-shadow);
+  border-top: 3px solid var(--accent-mint);
+  position: relative;
+}
+
+.status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-mint);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+/* תצוגת שעה בסגנון השעון הדיגיטלי הדק שבתמונה (00:00) */
+.status-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.status-time strong {
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-white);
+  letter-spacing: 1px;
+}
+
+/* קובייה שמאלית: "הזמן רכב" - זהה לקוביית ה-Twitter המוארת בגרדיאנט סגול-טורקיז */
+.book-hero-btn {
+  background: var(--grad-primary);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 6px 0 var(--card-hard-shadow), 0 8px 20px rgba(59, 158, 255, 0.22);
+  text-align: center;
+  transition: transform 0.15s ease;
+}
+
+.book-hero-btn:active {
+  transform: translateY(3px);
+}
+
+.book-hero-btn .title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-white);
+  letter-spacing: 0.2px;
+}
+
+.book-hero-btn .icon {
+  font-size: 32px;
+  line-height: 1;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
+}
+
+.book-hero-btn .plus-box {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(20, 22, 27, 0.35);
+  border: 1.5px solid #FFFFFF;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ==================== באנר נסיעות מחפשות נהג ==================== */
+.driver-alert-banner {
+  background-color: var(--bg-card);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-white);
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--card-hard-shadow);
+  border-right: 4px solid var(--accent-cyan);
+  direction: rtl;
+}
+
+.driver-alert-banner .link-text {
+  background: var(--grad-primary-horiz);
+  color: var(--text-white);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* כותרת סקציה (כמו הכותרת מעל הרשימה במסך הימני בתמונה) */
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-white);
+  margin-top: 4px;
+  padding-right: 2px;
+}
+
+/* ==================== רשימת כרטיסי פעילות ולו"ז (כמו השורות במסך האמצעי והימני) ==================== */
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.timeline-card {
+  background-color: var(--bg-card);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 5px 0 var(--card-hard-shadow);
+  direction: rtl;
+  position: relative;
+}
+
+/* פס חיווי דק וחד בצד ימין של כל שורה לפי סיווג */
+.timeline-card.operational { border-right: 4px solid var(--accent-orange); }
+.timeline-card.personal    { border-right: 4px solid var(--accent-purple); }
+.timeline-card.unplanned   { border-right: 4px solid var(--accent-coral); }
+.timeline-card.pending     { border-right: 4px solid var(--accent-yellow); }
+.timeline-card.free-slot   {
+  background-color: #20232E;
+  border-right: 4px solid var(--accent-cyan);
+}
+
+/* עמודת השעות בסגנון השעונים הדקים והגדולים שבתמונה (00:00) */
+.time-col {
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  min-width: 98px;
+  text-align: right;
+}
+
+.time-col .date {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.time-col .hours {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-white);
+  letter-spacing: 0.6px;
+  display: block;
+}
+
+/* עמודת המידע המרכזית */
+.info-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: right;
+}
+
+/* תגיות סיווג בצורת קפסולות/פסי התקדמות מהמסך הימני בתמונה */
+.task-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.operational-badge {
+  background: rgba(255, 159, 67, 0.16);
+  color: var(--accent-orange);
+  border: 1px solid rgba(255, 159, 67, 0.35);
+}
+
+.personal-badge {
+  background: rgba(138, 107, 255, 0.18);
+  color: #B69CFF;
+  border: 1px solid rgba(138, 107, 255, 0.4);
+}
+
+.warning-badge {
+  background: rgba(255, 209, 102, 0.16);
+  color: var(--accent-yellow);
+  border: 1px solid rgba(255, 209, 102, 0.35);
+}
+
+.urgent-badge {
+  background: rgba(255, 82, 99, 0.18);
+  color: var(--accent-coral);
+  border: 1px solid rgba(255, 82, 99, 0.4);
+}
+
+.mint-badge {
+  background: rgba(36, 240, 213, 0.16);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(36, 240, 213, 0.35);
+}
+
+.info-col .person-name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-white);
+}
+
+/* ==================== כפתורי חיוג ופעולה (בירוק-מנטה ובגרדיאנט סגול-טורקיז) ==================== */
+/* כפתורי חיוג - ירוק-מנטה זרחני כמו האווטאר והגרפים בתמונה */
+.btn-call,
+.btn-call-circle,
+.btn-call-small {
+  background: var(--grad-mint);
+  color: var(--text-dark);
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.btn-call:active,
+.btn-call-circle:active,
+.btn-call-small:active {
+  transform: scale(0.95);
+}
+
+.btn-call {
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  width: 100%;
+  box-shadow: 0 3px 10px rgba(42, 245, 152, 0.2);
+}
+
+.btn-call-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(42, 245, 152, 0.2);
+}
+
+.btn-call-small {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+/* כפתורי פעולה משניים במסך הלו"ז (כמו כפתור Optimize בתמונה) */
+.btn-volunteer {
+  background: var(--grad-primary-horiz);
+  color: var(--text-white);
+  border: none;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-approve {
+  background: linear-gradient(90deg, #FF5263, #FF9F43);
+  color: var(--text-white);
+  border: none;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* כפתור "+ הזמן רכב" במשבצת פנויה - קפסולת גרדיאנט כמו כפתור Optimize בתמונה */
+.btn-book-slot {
+  background: var(--grad-primary-horiz);
+  color: var(--text-white);
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(107, 77, 255, 0.25);
+}
+
+.slot-plus {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(20, 22, 27, 0.35);
+  color: var(--text-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ==================== מסך לוח זמנים (פס ימי השבוע וכפתורי סינון) ==================== */
+.week-strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.day-pill {
+  background-color: var(--bg-card);
+  box-shadow: 0 4px 0 var(--card-hard-shadow);
+  border-radius: 8px;
+  padding: 8px 2px;
+  text-align: center;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* היום הנבחר מקבל את הגרדיאנט של קוביית ה-Twitter מתוך התמונה */
+.day-pill.active {
+  background: var(--grad-primary);
+  color: var(--text-white);
+  font-weight: 700;
+  box-shadow: 0 4px 0 var(--card-hard-shadow), 0 4px 12px rgba(59, 158, 255, 0.25);
+}
+
+/* ==================== מסך הזמנת רכב ומסך פרופיל (טפסים, כפתורי בחירה ושדות) ==================== */
+.form-card {
+  background-color: var(--bg-card);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 5px 0 var(--card-hard-shadow);
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-white);
+  text-align: right;
+}
+
+.date-time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  background-color: var(--bg-input);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.date-time-row strong {
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+.return-calc {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent-mint);
+  padding-top: 2px;
+}
+
+.sub-note {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* קבוצות כפתורי בחירה (כמו המתגים והטאבים בתמונה) */
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.choice-btn {
+  flex: 1;
+  background-color: var(--bg-input);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 3px 0 #0B0C10;
+  color: var(--text-muted);
+  padding: 9px 6px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+/* כפתור בחירה פעיל - מקבל את גרדיאנט ה-Toggle הפעיל מהתמונה (סגול -> טורקיז) */
+.choice-btn.active,
+.choice-btn.active-orange,
+.choice-btn.active-green {
+  background: var(--grad-primary-horiz);
+  color: var(--text-white);
+  border-color: transparent;
+  box-shadow: 0 3px 10px rgba(59, 158, 255, 0.3);
+}
+
+.choice-btn.warning-tab {
+  color: var(--accent-cyan);
+}
+
+/* שדות קלט ותפריטי בחירה (Select / Input) */
+.input-solid {
+  background-color: var(--bg-input);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text-white);
+  font-size: 13.5px;
+  width: 100%;
+  outline: none;
+}
+
+.input-solid:focus {
+  border-color: var(--accent-cyan);
+}
+
+/* כפתור שליחה/אישור ראשי בתחתית - זהה לחלוטין לכפתור ה-"Accept" בתמונה */
+.cta-submit {
+  background: var(--grad-primary-horiz);
+  color: var(--text-white);
+  border: none;
+  padding: 14px 20px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: auto;
+  box-shadow: 0 6px 0 var(--card-hard-shadow), 0 8px 20px rgba(59, 158, 255, 0.25);
+  transition: transform 0.12s ease;
+}
+
+.cta-submit:active {
+  transform: translateY(3px);
+}
+
+/* ==================== מסך פרופיל אישי (כמו החלק העליון במסך הימני בתמונה) ==================== */
+.profile-bento-header {
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  padding: 18px 16px;
+  text-align: center;
+  box-shadow: 0 6px 0 var(--card-hard-shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* עיגול האווטאר הגדול בירוק-מנטה זרחני כמו במסך הימני בתמונה */
+.profile-avatar-big {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--grad-mint);
+  color: var(--text-dark);
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  box-shadow: 0 0 0 4px #1E212B, 0 6px 16px rgba(42, 245, 152, 0.25);
+}
+
+.profile-bento-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.role-tag {
+  background: var(--grad-primary-horiz);
+  color: var(--text-white);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ==================== סרגל ניווט תחתון ==================== */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 68px;
+  background-color: #14161C;
+  border-top: 2px solid var(--divider-line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  direction: rtl;
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.nav-pill {
+  padding: 2px 16px;
+  border-radius: 999px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.nav-tab.active {
+  color: var(--accent-cyan);
+}
+
+.nav-tab.active .nav-pill {
+  background: var(--grad-primary-horiz);
+  color: var(--text-white);
+  box-shadow: 0 3px 10px rgba(59, 158, 255, 0.3);
+}
